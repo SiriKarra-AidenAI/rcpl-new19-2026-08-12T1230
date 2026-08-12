@@ -1,0 +1,129 @@
+/* Workbasket / worklist — shares the visual language of Team & Assignment (stat strip) and the
+   dtable tables used across the app. */
+
+.wb-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.8rem; margin-bottom: 1.2rem; }
+.wb-stat { display: flex; align-items: center; gap: 0.7rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.9rem 1rem; box-shadow: var(--shadow-card); }
+.wb-stat-ic { width: 30px; height: 30px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; flex: none; background: var(--surface-3, var(--surface)); color: var(--ink-mute); }
+.wb-stat-val { font-size: 1.4rem; font-weight: 800; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.wb-stat-lbl { font-size: 0.72rem; color: var(--ink-mute); margin-top: 0.2rem; }
+.wb-stat.tone-good .wb-stat-ic { color: var(--good); background: var(--good-bg); }
+.wb-stat.tone-warn .wb-stat-ic { color: var(--warn); background: var(--warn-bg); }
+.wb-stat.tone-ai .wb-stat-ic { color: var(--ai); background: var(--ai-bg); }
+.wb-stat.tone-crit .wb-stat-ic { color: var(--crit); background: var(--crit-bg); }
+
+/* tabs */
+.wb-tabs { display: flex; gap: 0.4rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.wb-tabs button { background: none; border: none; border-bottom: 2px solid transparent; padding: 0.5rem 0.9rem; font-size: 0.85rem; font-weight: 600; color: var(--ink-mute); cursor: pointer; }
+.wb-tabs button.on { color: var(--ink); border-bottom-color: var(--ai); }
+
+.wb-card { margin-bottom: 1rem; }
+
+/* Collapsible section header (shared by the DB Pool panel and the Leads "created" section) */
+.wb-head { display: flex; align-items: flex-start; gap: 0.5rem; width: 100%; background: none; border: none; padding: 0; text-align: left; cursor: pointer; color: var(--ink); }
+.wb-head > svg { margin-top: 0.15rem; color: var(--ink-mute); flex: none; }
+.wb-head-txt { min-width: 0; }
+.wb-head-title { font-size: 0.92rem; font-weight: 800; color: var(--ink); }
+.wb-head-sub { font-size: 0.76rem; color: var(--ink-mute); margin-top: 0.15rem; }
+
+/* filters */
+.wb-filters { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
+/* scope segmented control — quick filter (mine / unclaimed / flagged / all) without leaving the table */
+.wb-scope { display: inline-flex; gap: 0.25rem; background: var(--surface-3, color-mix(in srgb, var(--ink) 4%, var(--surface))); border: 1px solid var(--border); border-radius: 8px; padding: 0.2rem; }
+.wb-scope button { background: none; border: none; border-radius: 6px; padding: 0.3rem 0.6rem; font-size: 0.78rem; font-weight: 600; color: var(--ink-mute); cursor: pointer; white-space: nowrap; }
+.wb-scope button.on { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-card); }
+/* Push search + state filter (and the count) to the right, leaving the scope tabs on the left. */
+.wb-search { display: inline-flex; align-items: center; gap: 0.4rem; border: 1px solid var(--border); border-radius: 8px; padding: 0.3rem 0.6rem; color: var(--ink-mute); background: var(--surface); margin-left: auto; }
+.wb-search input { border: none; background: none; outline: none; font-size: 0.82rem; color: var(--ink); min-width: 180px; }
+.wb-filters select { font-size: 0.82rem; padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--ink); }
+.wb-count { font-size: 0.75rem; color: var(--ink-mute); margin-left: 0.2rem; }
+
+/* table tweaks */
+/* Keep every cell middle-aligned so the DB avatar tile and the two-line Town/State cell sit on a
+   common baseline. */
+.wb-table td, .wb-table th { vertical-align: middle; text-align: left; }
+.wb-table th { white-space: nowrap; }
+.wb-table td { padding-top: 0.6rem; padding-bottom: 0.6rem; }
+.wb-table td.strong { font-weight: 700; }
+/* row hover + flagged tint (hover wins over the flagged tint) */
+.wb-table tbody tr { transition: background 0.12s; }
+.wb-table tbody tr:hover { background: var(--surface-2); }
+.wb-town { line-height: 1.35; }
+.wb-town .cell-sub { display: block; color: var(--ink-mute); font-size: 0.72rem; margin-top: 0.1rem; }
+
+/* DB name cell — colored initials tile + name */
+.wb-db { display: flex; align-items: center; gap: 0.65rem; }
+.wb-db-ic { width: 32px; height: 32px; border-radius: 9px; flex: none; display: grid; place-items: center;
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.02em; }
+.wb-db-name { font-weight: 700; color: var(--ink); }
+.wb-db-name .pill { margin-left: 0.45rem; vertical-align: middle; }
+.wb-db-link { background: none; border: none; padding: 0; cursor: pointer; font: inherit; text-align: left; }
+.wb-db-link .wb-db-name { text-decoration: underline; text-decoration-color: transparent; transition: text-decoration-color 0.12s; }
+.wb-db-link:hover .wb-db-name { text-decoration-color: currentColor; }
+
+/* tier badge — colour-coded so Tier 1/2/3 read at a glance instead of all-grey */
+.wb-tier { display: inline-flex; align-items: center; font-size: 0.72rem; font-weight: 700; border-radius: 999px; padding: 0.16rem 0.62rem; white-space: nowrap; }
+.wb-tier.t1 { background: color-mix(in srgb, var(--good) 13%, transparent); color: var(--good-text); }
+.wb-tier.t2 { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn-text); }
+.wb-tier.t3 { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink-soft); }
+/* bulk-select checkbox column */
+.wb-check { width: 36px; text-align: center; vertical-align: middle; }
+.wb-check input { cursor: pointer; width: 15px; height: 15px; }
+/* bulk action bar */
+.wb-bulk-bar { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.8rem; padding: 0.55rem 0.8rem; border: 1px solid color-mix(in srgb, var(--ai) 35%, var(--border)); background: var(--ai-bg); border-radius: 9px; font-size: 0.82rem; color: var(--ink); }
+.wb-bulk-bar select { font-size: 0.82rem; padding: 0.3rem 0.5rem; border: 1px solid var(--border); border-radius: 7px; background: var(--surface); color: var(--ink); }
+.wb-row-actions { display: flex; align-items: center; gap: 0.4rem; justify-content: flex-end; }
+.wb-table tr.wb-flagged { background: color-mix(in srgb, var(--crit) 5%, var(--surface)); }
+.wb-table tr.wb-flagged:hover { background: color-mix(in srgb, var(--crit) 9%, var(--surface)); }
+/* nicer native <select> — flat browser chrome replaced with an app-styled control + caret */
+.wb-table select, .wb-bulk-bar select, .wb-filters select, .wb-assign {
+  appearance: none; -webkit-appearance: none;
+  font-size: 0.8rem; font-weight: 600; color: var(--ink); background-color: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 1.7rem 0.4rem 0.65rem; cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238b93a4' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.6rem center; transition: border-color 0.12s, box-shadow 0.12s;
+}
+.wb-assign { min-width: 130px; }
+.wb-table select:hover, .wb-bulk-bar select:hover, .wb-filters select:hover, .wb-assign:hover { border-color: var(--border-strong); }
+.wb-table select:focus, .wb-bulk-bar select:focus, .wb-filters select:focus, .wb-assign:focus {
+  outline: none; border-color: var(--ai); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai) 18%, transparent); }
+/* prettier checkboxes */
+.wb-check input { accent-color: var(--ai); }
+
+/* per-ASE workload chips (assigner view) — lightest-load first, idle highlighted */
+.wb-load { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.wb-load-chip { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.78rem; color: var(--ink-soft);
+  border: 1px solid var(--border); border-radius: 999px; padding: 0.28rem 0.65rem 0.28rem 0.3rem; background: var(--surface); box-shadow: var(--shadow-card); }
+.wb-load-av { width: 24px; height: 24px; border-radius: 50%; flex: none; display: grid; place-items: center; font-size: 0.6rem; font-weight: 800; }
+.wb-load-nm { font-weight: 600; color: var(--ink); }
+.wb-load-n { min-width: 20px; height: 20px; padding: 0 0.35rem; border-radius: 999px; display: inline-grid; place-items: center;
+  background: var(--surface-3, color-mix(in srgb, var(--ink) 8%, var(--surface))); color: var(--ink); font-size: 0.72rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.wb-load-idle { font-style: normal; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--warn-text); }
+.wb-load-chip.idle { border-color: color-mix(in srgb, var(--warn) 45%, var(--border)); background: color-mix(in srgb, var(--warn) 8%, var(--surface)); }
+.wb-load-chip.idle .wb-load-n { background: color-mix(in srgb, var(--warn) 20%, var(--surface)); color: var(--warn-text); }
+/* on-leave teammate — clearly out, and greyed so you don't try to assign to them */
+.wb-load-leave { font-style: normal; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--crit-text); }
+.wb-load-chip.leave { border-color: color-mix(in srgb, var(--crit) 40%, var(--border)); background: color-mix(in srgb, var(--crit) 7%, var(--surface)); }
+.wb-load-chip.leave .wb-load-nm { color: var(--ink-mute); }
+.wb-load-chip.leave .wb-load-av { filter: grayscale(0.4); opacity: 0.75; }
+/* per-teammate leave toggle */
+.wb-leave-btn { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; margin-left: 0.1rem;
+  border: none; background: none; color: var(--ink-mute); cursor: pointer; transition: background 0.12s, color 0.12s; }
+.wb-leave-btn:hover { background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink); }
+.wb-load-chip.leave .wb-leave-btn:hover { background: color-mix(in srgb, var(--good) 15%, transparent); color: var(--good-text); }
+.wb-load-hint { display: flex; align-items: center; gap: 0.25rem; flex-wrap: wrap; margin: 0.6rem 0 0; font-size: 0.74rem; color: var(--ink-mute); line-height: 1.5; }
+.wb-load-hint svg { vertical-align: -1px; }
+
+/* supervisor team-load grid */
+.wb-team { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.6rem; }
+.wb-team-cell { display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.8rem; background: var(--surface); }
+.wb-team-cell.idle { border-color: color-mix(in srgb, var(--warn) 40%, var(--border)); background: color-mix(in srgb, var(--warn) 6%, var(--surface)); }
+.wb-team-name { flex: 1; min-width: 0; font-size: 0.84rem; font-weight: 700; color: var(--ink); display: flex; flex-direction: column; }
+.wb-team-name span { font-size: 0.7rem; font-weight: 500; color: var(--ink-mute); }
+.wb-team-load { font-size: 0.75rem; color: var(--ink-mute); }
+.wb-team-load b { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.wb-tl-head { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.9rem; }
+
+@media (max-width: 860px) {
+  .wb-stats { grid-template-columns: repeat(2, 1fr); }
+}

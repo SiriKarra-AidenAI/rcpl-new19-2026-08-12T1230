@@ -1,0 +1,21 @@
+.ctl { list-style: none; margin: 0; padding: 0; position: relative; }
+.ctl-empty { color: var(--ink-mute); font-size: 0.85rem; padding: 0.4rem 0; }
+.ctl-row { display: flex; gap: 0.7rem; padding: 0 0 0.9rem; position: relative; }
+.ctl-row::before { /* connector line */
+  content: ''; position: absolute; left: 11px; top: 22px; bottom: -2px; width: 2px; background: var(--border);
+}
+.ctl-row:last-child { padding-bottom: 0; }
+.ctl-row:last-child::before { display: none; }
+.ctl-dot {
+  width: 24px; height: 24px; border-radius: 50%; flex: none; display: inline-flex; align-items: center;
+  justify-content: center; background: var(--surface-3, var(--surface)); border: 1px solid var(--border);
+  color: var(--ink-mute); z-index: 1;
+}
+.ctl-body { padding-top: 0.15rem; }
+.ctl-summary { font-size: 0.85rem; color: var(--ink); line-height: 1.4; }
+.ctl-meta { font-size: 0.72rem; color: var(--ink-mute); margin-top: 0.15rem; }
+
+.ctl-row.tone-ai .ctl-dot { color: var(--ai); border-color: var(--ai-border); background: var(--ai-bg); }
+.ctl-row.tone-good .ctl-dot { color: var(--good); border-color: color-mix(in srgb, var(--good) 40%, var(--border)); background: var(--good-bg); }
+.ctl-row.tone-warn .ctl-dot { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, var(--border)); background: var(--warn-bg); }
+.ctl-row.tone-crit .ctl-dot { color: var(--crit); border-color: color-mix(in srgb, var(--crit) 40%, var(--border)); background: var(--crit-bg); }

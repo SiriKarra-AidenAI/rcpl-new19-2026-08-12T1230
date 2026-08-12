@@ -1,0 +1,400 @@
+/* AI insight banner — one row: icon · tag+text · action */
+.dash-insight { display: flex; align-items: center; gap: 0.9rem; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.95rem 1.15rem;
+  margin-bottom: 1.2rem; box-shadow: var(--shadow-card); }
+.dash-insight .di-ic { width: 38px; height: 38px; border-radius: 10px; flex: none; display: grid; place-items: center;
+  background: var(--ai-bg); color: var(--ai-text); }
+.dash-insight .di-body { flex: 1; min-width: 0; }
+.dash-insight .di-tag { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.13em; color: var(--ai-text); margin-bottom: 0.25rem; }
+.dash-insight .di-text { font-size: 0.94rem; color: var(--ink); line-height: 1.5; }
+
+/* Header action group — Export (ghost) + primary Create Lead sit together, top-right */
+.dash-head-actions { display: flex; align-items: center; gap: 0.6rem; }
+
+/* Section dividers — group the flat stack of cards into "At a glance" vs "Your work" */
+.dash-section-label { display: flex; align-items: center; gap: 0.7rem; margin: 0.4rem 0 0.7rem;
+  font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-mute); }
+.dash-section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* KPI tiles */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin-bottom: 1.2rem; }
+.kpi-grid.kpi-6 { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 1180px) { .kpi-grid.kpi-6 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) { .kpi-grid, .kpi-grid.kpi-6 { grid-template-columns: 1fr 1fr; } }
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 0.95rem 1rem; box-shadow: var(--shadow-card); }
+.kpi .kpi-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem; }
+.kpi .kpi-ic { width: 26px; height: 26px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.kpi .k-label { font-size: 0.74rem; font-weight: 600; color: var(--ink-soft); line-height: 1.2; }
+.kpi .k-value { font-size: 1.65rem; font-weight: 800; color: var(--ink); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; line-height: 1; }
+.kpi .k-sub { font-size: 0.7rem; color: var(--ink-mute); margin-top: 0.25rem; }
+.kpi .kpi-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 0.5rem; margin-top: 0.55rem; }
+.kpi .k-delta { font-size: 0.7rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kpi .k-delta.good { color: var(--good-text); }
+.kpi .k-delta.bad { color: var(--crit-text); }
+/* Over-SLA / Flagged tiles read red when they carry any items — that's the "act now" signal.
+   Flat card, same as every other tile — only the icon/value/delta pick up the alert color, no
+   tinted background or border, so the row doesn't turn into a wall of red boxes. */
+.kpi.kpi-alert .k-value { color: var(--crit-text); }
+/* every tile is a shortcut into the view it summarises */
+.kpi.clickable { cursor: pointer; transition: box-shadow 0.15s, transform 0.15s, border-color 0.15s; }
+.kpi.clickable:hover { box-shadow: var(--shadow-pop, 0 4px 14px rgba(0,0,0,0.1)); transform: translateY(-1px); border-color: var(--border-strong); }
+.kpi.clickable:focus-visible { outline: 2px solid var(--ai); outline-offset: 2px; }
+
+/* Avg. AI confidence breakdown modal */
+.conf-modal-lead { color: var(--ink-soft); font-size: 0.85rem; line-height: 1.55; margin: 0 0 1rem; }
+.conf-modal-empty { color: var(--ink-mute); font-size: 0.85rem; margin: 0; }
+.conf-modal-avg { display: flex; align-items: baseline; justify-content: space-between; padding: 0.6rem 0.8rem; margin-bottom: 0.8rem; border-radius: var(--r-md, 8px); background: var(--ai-bg); border: 1px solid var(--ai-border); }
+.conf-modal-avg span { font-size: 0.78rem; font-weight: 600; color: var(--ink-soft); }
+.conf-modal-avg b { font-size: 1.35rem; font-weight: 800; color: var(--ai-text); font-variant-numeric: tabular-nums; }
+.conf-modal-list { display: flex; flex-direction: column; gap: 0.55rem; }
+.conf-modal-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.conf-modal-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); display: flex; flex-direction: column; }
+.conf-modal-sub { font-size: 0.72rem; font-weight: 500; color: var(--ink-mute); margin-top: 0.1rem; }
+
+/* Lead pipeline progress — dot track shown on the Recent cases table */
+.lead-progress { display: inline-flex; align-items: center; gap: 4px; }
+.lead-progress .lp-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex: none; }
+.lead-progress .lp-dot.done { background: var(--ink-mute); }
+.lead-progress .lp-dot.current { background: var(--ai); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai) 22%, transparent); }
+
+/* middle row: agents feed (narrow) · journey (wide) */
+.dash-2col { display: grid; grid-template-columns: 1fr 1.4fr; gap: 1rem; margin-bottom: 1rem; }
+@media (max-width: 980px) { .dash-2col { grid-template-columns: 1fr; } }
+
+/* Agent activity feed */
+.feed-head { display: flex; align-items: center; gap: 0.5rem; }
+.feed-head .live { display: inline-flex; align-items: center; gap: 0.35rem; margin-left: auto; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--good-text); }
+.feed { list-style: none; margin: 0.4rem 0 0; padding: 0; }
+.feed li { display: flex; gap: 0.7rem; padding: 0.65rem 0; border-bottom: 1px solid var(--border); }
+.feed li:last-child { border-bottom: none; }
+.feed .fb { width: 28px; height: 28px; border-radius: 8px; flex: none; display: flex; align-items: center; justify-content: center;
+  font-size: 0.62rem; font-weight: 800; color: #fff; }
+.feed .fbody { flex: 1; min-width: 0; }
+.feed .fbody .fa { font-size: 0.84rem; color: var(--ink); line-height: 1.4; }
+.feed .fbody .fa b { font-weight: 700; }
+.feed .fbody .fmeta { font-size: 0.72rem; color: var(--ink-mute); margin-top: 0.15rem; }
+.feed .ftime { font-size: 0.7rem; color: var(--ink-mute); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.feed-more { display: block; margin-top: 0.55rem; padding: 0; background: none; border: none; cursor: pointer;
+  font-size: 0.8rem; font-weight: 700; color: var(--ai-text); }
+.feed-more:hover { text-decoration: underline; }
+
+/* Journey card: steps on the left, up-next / quick-actions rail on the right */
+.journey-wrap { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.1rem; }
+@media (max-width: 680px) { .journey-wrap { grid-template-columns: 1fr; } }
+.journey2 { list-style: none; margin: 0; padding: 0; }
+.journey2 li { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.45rem 0; position: relative; }
+.journey2 .j-node { width: 22px; height: 22px; border-radius: 50%; flex: none; display: grid; place-items: center;
+  font-size: 0.68rem; font-weight: 800; margin-top: 0.05rem; background: var(--surface-2); color: var(--ink-mute);
+  border: 1.5px solid var(--border-strong); position: relative; z-index: 1; }
+.journey2 li:not(:last-child)::before { content: ''; position: absolute; left: 10.5px; top: 28px; width: 1.5px; height: calc(100% - 22px); background: var(--border); }
+.journey2 li.done .j-node { background: var(--good); border-color: var(--good); color: #fff; }
+.journey2 li.done::before { background: var(--good); }
+.journey2 li.current .j-node { background: var(--ai); border-color: var(--ai); color: #fff; box-shadow: 0 0 0 4px var(--ai-bg); }
+.journey2 .j-label { font-size: 0.85rem; color: var(--ink-soft); line-height: 1.35; }
+.journey2 li.current .j-label { color: var(--ink); font-weight: 700; }
+.journey2 .j-state { font-size: 0.68rem; margin-top: 0.1rem; color: var(--ink-mute); }
+.journey2 li.done .j-state { color: var(--good-text); }
+.journey2 li.current .j-state { color: var(--ai-text); font-weight: 600; }
+.journey2 li.clickable { cursor: pointer; }
+.journey2 li.clickable:hover .j-label { color: var(--ai-text); }
+.journey2 .j-count { display: inline-flex; align-items: center; justify-content: center; margin-left: 0.45rem;
+  min-width: 18px; height: 16px; padding: 0 0.4rem; border-radius: 999px; background: var(--ai-bg);
+  color: var(--ai-text); font-size: 0.64rem; font-weight: 800; vertical-align: 1px; }
+
+/* agents-at-work: how many leads an agent is holding right now */
+.feed .f-count { display: inline-flex; align-items: center; margin-left: 0.4rem; padding: 0.05rem 0.45rem;
+  border-radius: 999px; background: var(--ai-bg); color: var(--ai-text); font-size: 0.64rem; font-weight: 800; }
+.journey2 .j-go { margin-left: auto; align-self: center; color: var(--ai-text); font-weight: 700; opacity: 0; transition: opacity 0.12s; }
+.journey2 li.clickable:hover .j-go { opacity: 1; }
+
+.journey-rail { display: flex; flex-direction: column; gap: 0.8rem; }
+.rail-title { font-size: 0.78rem; font-weight: 800; color: var(--ink); margin-bottom: 0.45rem; }
+.upnext { border: 1px solid var(--border); border-radius: var(--r-md); padding: 0.85rem 0.95rem; background: var(--surface); }
+.upnext .un-body { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.5; margin-bottom: 0.65rem; }
+.upnext .un-body b { color: var(--ink); }
+/* urgent-action framing: warn-tinted panel so it reads as "act on this now" */
+.upnext.urgent { background: var(--warn-bg); border-color: color-mix(in srgb, var(--warn) 45%, var(--border)); }
+.upnext.urgent .rail-title { color: var(--warn-text); display: inline-flex; align-items: center; gap: 0.35rem; }
+.upnext.urgent .un-body b { color: var(--warn-text); }
+.quick { border: 1px solid var(--border); border-radius: var(--r-md); padding: 0.85rem 0.95rem; background: var(--surface-2); }
+.quick .q-item { display: flex; align-items: center; gap: 0.55rem; width: 100%; padding: 0.42rem 0.2rem;
+  background: none; border: none; cursor: pointer; font-size: 0.82rem; color: var(--ink-soft); border-radius: 6px; text-align: left; }
+.quick .q-item:hover { color: var(--ai-text); background: var(--surface); }
+
+/* Overdue + Your journey row — the two pieces that make "what's happening, what's next" clear */
+.dash-mid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1rem; margin-bottom: 1rem; align-items: start; }
+@media (max-width: 980px) { .dash-mid { grid-template-columns: 1fr; } }
+.overdue-list { list-style: none; margin: 0; padding: 0; }
+.overdue-list li { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem;
+  padding: 0.65rem 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.overdue-list li:last-child { border-bottom: none; }
+.overdue-list li:hover { background: var(--surface-2); margin: 0 -0.5rem; padding-left: 0.5rem; padding-right: 0.5rem; border-radius: 6px; }
+.overdue-list .ov-main { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.overdue-list .ov-id { font-size: 0.72rem; font-weight: 800; color: var(--ink-mute); font-family: var(--font-mono); }
+.overdue-list .ov-title { font-size: 0.86rem; font-weight: 700; color: var(--ink); }
+.overdue-list .ov-next { font-size: 0.76rem; color: var(--ink-soft); }
+.overdue-list .ov-side { flex: none; }
+
+/* bottom row: recent cases (wide) · confidence trend */
+.dash-bottom { display: grid; grid-template-columns: 1.55fr 1fr; gap: 1rem; align-items: start; }
+@media (max-width: 980px) { .dash-bottom { grid-template-columns: 1fr; } }
+
+.rc-table .cell-sub { font-size: 0.7rem; color: var(--ink-mute); margin-top: 0.12rem; }
+/* live SLA countdown — tabular numerals so the ticking digits don't jitter */
+.sla-timer { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 700;
+  font-variant-numeric: tabular-nums; white-space: nowrap; border-radius: 999px; padding: 0.18rem 0.55rem; }
+.sla-timer.good { background: var(--good-bg); color: var(--good-text); }
+.sla-timer.warn { background: var(--warn-bg); color: var(--warn-text); }
+.sla-timer.crit { background: color-mix(in srgb, var(--crit) 14%, transparent); color: var(--crit); }
+/* long-overdue (>48h): still clearly "over", but muted so it doesn't turn the whole column red */
+.sla-timer.stale { background: var(--surface-3); color: color-mix(in srgb, var(--crit) 55%, var(--ink-mute)); }
+.conf-cell { display: flex; flex-direction: column; gap: 0.3rem; min-width: 90px; }
+.conf-cell .conf-num { font-size: 0.8rem; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.conf-bar { height: 5px; border-radius: 999px; background: var(--surface-3); overflow: hidden; }
+.conf-bar i { display: block; height: 100%; border-radius: 999px; }
+
+.trend-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.6rem; }
+.trend-svg { width: 100%; height: auto; display: block; }
+.trend-sub { font-size: 0.72rem; color: var(--ink-mute); margin-top: 0.5rem; }
+
+/* View-lead modal (with AI confidence justification) */
+.lead-modal-head { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 1rem; }
+.lead-modal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem 1.2rem; margin-bottom: 1.1rem; }
+.lead-modal-grid > div { display: flex; align-items: baseline; justify-content: space-between; gap: 0.8rem; padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+.lead-modal-grid span { color: var(--ink-mute); }
+.lead-modal-grid b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.lead-modal-conf { border: 1px solid var(--ai-border); background: var(--ai-bg); border-radius: 10px; padding: 0.9rem 1rem; }
+.lead-modal-conf-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
+.lead-modal-conf-head span { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-mute); }
+.lead-modal-why { font-size: 0.85rem; line-height: 1.55; color: var(--ink); margin: 0 0 0.9rem; }
+.lead-modal-factors { display: flex; flex-direction: column; gap: 0.5rem; }
+.lmf { display: grid; grid-template-columns: 120px 1fr 48px; align-items: center; gap: 0.6rem; font-size: 0.8rem; }
+.lmf > span { color: var(--ink-mute); }
+.lmf > b { text-align: right; color: var(--ink); font-variant-numeric: tabular-nums; }
+.lead-modal-note { display: flex; align-items: flex-start; gap: 0.35rem; font-size: 0.76rem; color: var(--ink-mute); margin: 0.9rem 0 0; line-height: 1.5; }
+
+/* Workbasket summary widget (field/supervisor personas) */
+.wb-widget { display: flex; flex-direction: column; gap: 0.7rem; }
+.wb-widget-row { display: flex; gap: 0.8rem; }
+.wb-widget-tile { flex: 1; border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem 0.9rem; background: var(--surface); }
+.wb-widget-tile .v { font-size: 1.4rem; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+.wb-widget-tile .l { font-size: 0.72rem; color: var(--ink-mute); margin-top: 0.15rem; }
+.wb-widget-tile.alert { border-color: color-mix(in srgb, var(--warn) 40%, var(--border)); background: color-mix(in srgb, var(--warn) 6%, var(--surface)); }
+
+/* "With" (owning persona + person) cell in the Recent cases table */
+.rc-with { display: flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; }
+/* the specific PERSON handling this case — "who's dealing with it" — bold, not a muted footnote */
+.rc-with .cell-sub { font-size: 0.76rem; font-weight: 700; color: var(--ink); }
+
+/* RBL supervisor oversight panel */
+.sup-team { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; }
+.sup-asm { display: flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); border-radius: 9px; padding: 0.5rem 0.7rem; background: var(--surface); }
+.sup-asm.idle { border-color: color-mix(in srgb, var(--warn) 40%, var(--border)); background: color-mix(in srgb, var(--warn) 6%, var(--surface)); }
+.sup-asm-name { flex: 1; min-width: 0; font-size: 0.82rem; font-weight: 700; color: var(--ink); }
+.sup-asm-load { font-size: 0.75rem; color: var(--ink-mute); }
+.sup-asm-load b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.sup-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+/* ---------------- Page layout: main column (queue) + right rail (Case health / Your journey) ---------------- */
+.dash-layout { display: grid; grid-template-columns: 1fr 320px; gap: 1.2rem; align-items: start; }
+@media (max-width: 1100px) { .dash-layout { grid-template-columns: 1fr; } }
+.dash-main { display: flex; flex-direction: column; gap: 1.2rem; min-width: 0; }
+/* top: 5rem (not 1rem) clears the app's own sticky top bar (Shell.css .topbar, z-index 20) —
+   same fix Analytics' sticky rail already uses (.an-rail) — otherwise the rail's top edge sits
+   partly behind the top bar instead of visibly pinned below it. */
+.dash-side { display: flex; flex-direction: column; gap: 1rem; position: sticky; top: 5rem; align-self: start; }
+@media (max-width: 1100px) { .dash-side { position: static; } }
+
+/* ---------------- Cases by Stage · Overdue Tasks (mid row) ---------------- */
+.dash-mid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+@media (max-width: 900px) { .dash-mid2 { grid-template-columns: 1fr; } }
+.chart-view-all { font-size: 0.76rem; font-weight: 700; color: var(--ai-text); background: none; border: none; cursor: pointer; padding: 0; white-space: nowrap; }
+.chart-view-all:hover { text-decoration: underline; }
+
+.status-bar-total { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;
+  padding-top: 0.6rem; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--ink-soft); }
+.status-bar-total b { color: var(--ink); font-variant-numeric: tabular-nums; font-size: 0.95rem; }
+
+.overdue-mini-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.overdue-mini-list li { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
+  padding: 0.55rem 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.overdue-mini-list li:last-child { border-bottom: none; }
+.overdue-mini-list li:hover { background: var(--surface-2); }
+.oml-main { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.oml-title { font-size: 0.83rem; font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.oml-sub { font-size: 0.72rem; color: var(--ink-mute); }
+.oml-side { flex: none; }
+
+/* ---------------- Active Process / Process Stages (right rail, focus case) ---------------- */
+.proc-focus-name { font-size: 0.92rem; font-weight: 800; color: var(--ink); }
+.proc-focus-sub { font-size: 0.76rem; color: var(--ink-mute); margin-top: 0.15rem; margin-bottom: 0.8rem; }
+.proc-mini-flow { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.9rem; }
+.proc-mini-flow .pmf-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border-strong); flex: none; }
+.proc-mini-flow .pmf-dot.done { background: var(--good); }
+.proc-mini-flow .pmf-dot.now { background: var(--ai); box-shadow: 0 0 0 3px var(--ai-bg); }
+
+.proc-stage-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.proc-stage-list li { display: flex; align-items: center; gap: 0.6rem; padding: 0.4rem 0; font-size: 0.83rem; color: var(--ink-mute); position: relative; }
+.proc-stage-list li:not(:last-child)::before { content: ''; position: absolute; left: 8px; top: 24px; width: 1.5px; height: calc(100% - 10px); background: var(--border); }
+.proc-stage-list .psl-dot { width: 17px; height: 17px; border-radius: 50%; flex: none; display: grid; place-items: center;
+  background: var(--surface-2); border: 1.5px solid var(--border-strong); color: #fff; z-index: 1; }
+.proc-stage-list li.done { color: var(--good-text); }
+.proc-stage-list li.done .psl-dot { background: var(--good); border-color: var(--good); }
+.proc-stage-list li.done::before { background: var(--good); }
+.proc-stage-list li.current { color: var(--ink); font-weight: 700; }
+.proc-stage-list li.current .psl-dot { background: var(--ai); border-color: var(--ai); box-shadow: 0 0 0 3px var(--ai-bg); }
+
+/* ---------------- Quick Links ---------------- */
+.quick-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.quick-links li button { display: flex; align-items: center; gap: 0.55rem; width: 100%; padding: 0.5rem 0.2rem;
+  background: none; border: none; cursor: pointer; font-size: 0.84rem; font-weight: 600; color: var(--ai-text); text-align: left; border-radius: 6px; }
+.quick-links li button:hover { background: color-mix(in srgb, var(--ai) 8%, transparent); }
+
+/* ---------------- Case health (donut) ---------------- */
+.journey-rail-compact { gap: 0.6rem; }
+.journey-rail-compact .journey2 li { padding: 0.3rem 0; }
+.journey-rail-compact .upnext { padding: 0.7rem 0.8rem; }
+.chart-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.8rem; }
+.chart-head .chart-sub { font-size: 0.78rem; font-weight: 500; color: var(--ink-mute); }
+.chart-empty { padding: 2rem 0; text-align: center; color: var(--ink-mute); font-size: 0.85rem; }
+
+.health-body { display: flex; flex-direction: column; align-items: center; gap: 0.9rem; }
+.donut { flex: none; }
+.donut-total { font-size: 1.5rem; font-weight: 800; fill: var(--ink); }
+.donut-sub { font-size: 0.52rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; fill: var(--ink-mute); }
+.health-legend { list-style: none; margin: 0; padding: 0; width: 100%; display: flex; flex-direction: column; gap: 0.5rem; }
+.health-legend li { display: flex; align-items: center; gap: 0.55rem; font-size: 0.82rem; }
+.health-legend .hl-dot { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.health-legend .hl-label { color: var(--ink-soft); flex: 1; min-width: 0; }
+.health-legend .hl-val { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+.health-legend .hl-pct { color: var(--ink-mute); font-weight: 500; }
+
+/* ---------------- Recent cases: type badge, value, action, pagination ---------------- */
+/* DB-type badge — New / Replacement / Additional, colour-coded so the mix is scannable. Now sits
+   inline right next to the distributor name (folded out of its own column) so it stays visible
+   without stretching the table another column wide. */
+.rc-type { display: inline-flex; align-items: center; font-size: 0.66rem; font-weight: 700; white-space: nowrap;
+  border-radius: 999px; padding: 0.08rem 0.5rem; margin-left: 0.4rem; vertical-align: 1px;
+  background: color-mix(in srgb, var(--ink) 8%, transparent); color: var(--ink-soft); }
+.rc-type.new { background: color-mix(in srgb, var(--chart-1) 15%, transparent); color: var(--chart-1); }
+.rc-type.replacement { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn-text); }
+.rc-type.additional { background: color-mix(in srgb, var(--good) 14%, transparent); color: var(--good-text); }
+/* Type pill now sits under the Case ID (its own cell-sub row) instead of inline after the
+   distributor name — undo the inline spacing that assumed it followed text. */
+.cell-sub .rc-type { margin-left: 0; }
+.rc-muted { color: var(--ink-mute); }
+/* "What's going on" column — the next action, plus (when there's more to say) the real reason
+   underneath, capped so a long flag reason doesn't stretch the row. */
+.rc-going-on { max-width: 260px; }
+.rc-going-on .cell-sub { line-height: 1.4; }
+/* SLA column — AI-confidence bar stacked above the live countdown pill, one combined "how sure,
+   how urgent" read instead of two separate columns. */
+.rc-sla-timer { margin-top: 0.35rem; }
+.rc-empty { text-align: center; color: var(--ink-mute); padding: 1.3rem 0; }
+/* Due Date column — reads red once the deadline has actually passed, same signal the SLA
+   countdown pill already uses elsewhere. */
+.rc-due-overdue { color: var(--crit-text); font-weight: 700; font-size: 0.78rem; }
+
+/* Stage breadcrumb — "where is this, exactly" (Submitted › Under Review › Leadership Sign-off,
+   or Open › Pending › Approval 1 › Approval 2 › Active for a lead), with a Rejected off-path
+   branch. Same visual language as Approvals' own stepper (done=good, now=ai, off=crit) so a case
+   never LOOKS like it's in a different place than Approvals says it is. */
+.stage-crumb { display: flex; flex-wrap: wrap; align-items: center; gap: 0.1rem; margin-top: 0.35rem; }
+.stage-crumb .sc-step { display: inline-flex; align-items: center; gap: 0.15rem; font-size: 0.72rem; color: var(--ink-mute); }
+.stage-crumb .sc-sep { color: var(--border-strong); margin: 0 0.15rem; }
+.stage-crumb .sc-step.done .sc-label { color: var(--good-text); font-weight: 600; }
+.stage-crumb .sc-step.now .sc-label { color: var(--ai-text); font-weight: 800; }
+.stage-crumb .sc-step.now.off .sc-label { color: var(--crit-text); font-weight: 800; }
+/* compact (table row): a small dot trail, only the current/rejected step spells out its name —
+   reads as a mini progress track instead of spelling out every stage on one crowded line */
+.stage-crumb.compact { gap: 0.22rem; }
+.stage-crumb.compact .sc-sep { display: none; }
+.stage-crumb.compact .sc-step:not(.now) .sc-label { display: none; }
+.stage-crumb.compact .sc-step:not(.now)::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--border-strong); }
+.stage-crumb.compact .sc-step.done::after { background: var(--good); }
+.stage-crumb.compact .sc-step.now .sc-label { font-size: 0.72rem; }
+
+/* Recent cases card header — title (left) + ONE aggregate pipeline breadcrumb, stuck up here
+   once instead of repeating a stage trail on every row. */
+.rc-head { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
+.rc-pipeline { display: flex; align-items: center; flex-wrap: wrap; row-gap: 0.4rem; }
+.rc-chip-wrap, .rc-pipeline .rp-chip-wrap { display: inline-flex; align-items: center; }
+/* Each stage is its own coloured chip (tone-neutral/warn/ai/good), not plain text divided by a
+   border — the colour itself signals what kind of stage it is, and a chevron between chips
+   keeps the "this is a sequence" breadcrumb read. */
+.rc-pipeline .rp-chip { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.76rem; font-weight: 600;
+  padding: 0.28rem 0.65rem; border-radius: 999px; border: 1px solid transparent; cursor: pointer; font: inherit;
+  white-space: nowrap; transition: transform 0.1s, box-shadow 0.1s; }
+.rc-pipeline .rp-chip:hover { transform: translateY(-1px); }
+.rc-pipeline .rp-chip b { font-variant-numeric: tabular-nums; font-weight: 800; }
+.rc-pipeline .rp-chip-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+.rc-pipeline .rp-sep { display: inline-flex; color: var(--border-strong); margin: 0 0.15rem; }
+
+.rc-pipeline .rp-chip.tone-neutral { color: var(--ink-soft); background: var(--surface-2); border-color: var(--border); }
+.rc-pipeline .rp-chip.tone-neutral.active { color: #fff; background: var(--ink-mute); }
+.rc-pipeline .rp-chip.tone-warn { color: var(--warn-text); background: var(--warn-bg); border-color: color-mix(in srgb, var(--warn) 35%, transparent); }
+.rc-pipeline .rp-chip.tone-warn.active { color: #fff; background: var(--warn); }
+.rc-pipeline .rp-chip.tone-ai { color: var(--ai-text); background: var(--ai-bg); border-color: var(--ai-border); }
+.rc-pipeline .rp-chip.tone-ai.active { color: #fff; background: var(--ai); }
+.rc-pipeline .rp-chip.tone-good { color: var(--good-text); background: var(--good-bg); border-color: color-mix(in srgb, var(--good) 35%, transparent); }
+.rc-pipeline .rp-chip.tone-good.active { color: #fff; background: var(--good); }
+.rc-pipeline .rp-chip.tone-crit { color: var(--crit-text); background: var(--crit-bg); border-color: color-mix(in srgb, var(--crit) 35%, transparent); }
+.rc-pipeline .rp-chip.tone-crit.active { color: #fff; background: var(--crit); }
+/* Overdue toggle — pinned last in the breadcrumb row itself (not a separate chip in the filter
+   row below), same "click a stage" pattern but styled as an alert pill since it isn't a stage. */
+.rc-pipeline .rp-overdue { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.76rem; font-weight: 700;
+  margin-left: 0.5rem; border: 1px solid color-mix(in srgb, var(--crit) 35%, var(--border));
+  background: color-mix(in srgb, var(--crit) 7%, var(--surface)); color: var(--crit-text);
+  border-radius: 999px; padding: 0.25rem 0.7rem; cursor: pointer; font: inherit; }
+.rc-pipeline .rp-overdue b { color: var(--crit-text); font-variant-numeric: tabular-nums; }
+.rc-pipeline .rp-overdue:hover { background: color-mix(in srgb, var(--crit) 13%, var(--surface)); }
+.rc-pipeline .rp-overdue.active { background: var(--crit); color: #fff; }
+.rc-pipeline .rp-overdue.active b { color: #fff; }
+
+/* Filter row — just Type and SLA urgency; Status/Sort dropped since the pipeline breadcrumb
+   above already covers stage/status, and rows sort by SLA urgency by default. */
+.rc-filters { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
+.rc-filters select { appearance: none; -webkit-appearance: none; font-size: 0.8rem; font-weight: 600; color: var(--ink);
+  background-color: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.4rem 1.7rem 0.4rem 0.65rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238b93a4' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.6rem center; }
+.rc-filters select:hover { border-color: var(--border-strong); }
+.rc-filters select:focus { outline: none; border-color: var(--ai); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ai) 18%, transparent); }
+.rc-clear { font-size: 0.78rem; font-weight: 700; color: var(--ai-text); background: none; border: none; cursor: pointer; padding: 0.3rem 0.2rem; }
+.rc-clear:hover { text-decoration: underline; }
+
+/* clickable rows — open the full case-level picture in a modal (stays on the dashboard) */
+.rc-table tr.rc-row { cursor: pointer; }
+.rc-table tr.rc-row:hover { background: var(--surface-2); }
+
+/* case-detail modal */
+.rc-modal-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
+.rc-modal-head .rc-modal-sub { font-size: 0.85rem; color: var(--ink-soft); }
+.rc-detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.6rem 1.4rem; }
+.rcd-field { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.35rem 0; border-bottom: 1px solid var(--border); }
+.rcd-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-mute); }
+.rcd-value { font-size: 0.88rem; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.rc-detail-note { display: flex; align-items: flex-start; gap: 0.4rem; margin-top: 0.9rem; padding: 0.6rem 0.75rem;
+  border-radius: var(--r-md, 8px); background: color-mix(in srgb, var(--crit) 7%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--crit) 30%, var(--border)); font-size: 0.82rem; color: var(--ink); line-height: 1.45; }
+.rc-detail-note svg { color: var(--crit); flex: none; margin-top: 0.15rem; }
+.rc-detail-foot { display: flex; justify-content: flex-end; margin-top: 0.9rem; }
+.rc-action { display: flex; align-items: center; gap: 0.15rem; justify-content: flex-end; }
+.kebab { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 7px; border: none;
+  background: none; color: var(--ink-mute); cursor: pointer; }
+.kebab:hover { background: var(--surface-2); color: var(--ink); }
+
+.rc-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  margin-top: 0.9rem; padding-top: 0.85rem; border-top: 1px solid var(--border); }
+.rc-count { font-size: 0.78rem; color: var(--ink-mute); }
+.rc-pager { display: flex; align-items: center; gap: 0.3rem; }
+.rc-pager .pg { min-width: 30px; height: 30px; padding: 0 0.4rem; border: 1px solid var(--border); border-radius: 7px;
+  background: var(--surface); color: var(--ink-soft); font-size: 0.8rem; font-weight: 700; cursor: pointer;
+  display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; }
+.rc-pager .pg:hover:not(:disabled) { border-color: var(--border-strong); color: var(--ink); }
+.rc-pager .pg.active { background: var(--ai); border-color: var(--ai); color: #fff; }
+.rc-pager .pg:disabled { opacity: 0.4; cursor: default; }
+/* the prev-chevron is the same icon flipped */
+.rc-pager .pg[aria-label="Previous page"] svg { transform: rotate(180deg); }

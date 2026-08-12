@@ -1,0 +1,10 @@
+/* SLA configuration rows */
+.sla-cfg { display: flex; flex-direction: column; gap: 0.2rem; }
+.sla-cfg-row { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
+.sla-cfg-row:last-child { border-bottom: 0; }
+.sla-cfg-row > div:first-child { display: flex; flex-direction: column; gap: 0.2rem; }
+.sla-cfg-row b { font-size: 0.9rem; color: var(--ink); }
+.sla-cfg-row span { font-size: 0.78rem; color: var(--ink-mute); max-width: 60ch; line-height: 1.45; }
+.sla-cfg-input { display: inline-flex; align-items: center; gap: 0.4rem; flex: none; font-size: 0.85rem; color: var(--ink-soft); white-space: nowrap; }
+.sla-cfg-input input { width: 58px; font-size: 0.9rem; text-align: center; padding: 0.35rem 0.4rem; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--surface); color: var(--ink); font-variant-numeric: tabular-nums; }
+.sla-cfg-input input:focus { outline: 2px solid var(--ai); outline-offset: 0; border-color: var(--ai); }
